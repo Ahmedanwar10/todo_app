@@ -22,8 +22,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.transparent,
+        textTheme: TextTheme(
+          headline4: TextStyle(
+            fontSize: 32,
+            color: Colors.black,
+          )
+        ),
+         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Color(0xFFDFECDB),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.transparent,
+          elevation: 0
+        ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -36,7 +46,7 @@ class MyApp extends StatelessWidget {
          LoginScreen.routeName : (_)=> LoginScreen(),
          HomeScreen.routeName:(_)=> HomeScreen(),
        },
-      initialRoute: RegisterScreen.routeName,
+      initialRoute: LoginScreen.routeName,
     );
   }
 }

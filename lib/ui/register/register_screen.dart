@@ -40,6 +40,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
 
       child: Scaffold(
+        backgroundColor: Colors.transparent,
+
         appBar: AppBar(
           title: Text("Register",style: TextStyle(
             color: Colors.white,
