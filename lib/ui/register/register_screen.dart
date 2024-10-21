@@ -1,12 +1,14 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/components/custom_form_field.dart';
 import 'package:todo/database/my_database.dart';
 import 'package:todo/database/model/user.dart' as MyUser;
 import 'package:todo/ui/dialog_utlis.dart';
 import 'package:todo/ui/home/home_screen.dart';
 import 'package:todo/validation_utlis.dart';
+import '../../provider/auth_provider.dart';
 import '../login/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -149,9 +151,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         email: emailController.text,
       );
       await MyDataBase.addUser(myUsr);
+      var authProvider = Provider.of<AuthinProvider>(context,listen: false);
+      authProvider.updateUser(myUsr);
       DialogUtlis.hideDialog(context);
       DialogUtlis.showMassage(context, "User register Successfully",
-      postActionName:'Ok',
+      posActionName:'Ok',
       postAction: (){
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
       },
@@ -168,13 +172,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
          errorMessage ='The account already exists for that email.';
       }
       DialogUtlis.showMassage(context, errorMessage,
-          postActionName:'Ok' );
+          posActionName:'Ok' );
 
     } catch (e) {
       DialogUtlis.hideDialog(context);
       String errorMessage = 'Something went wrong';
       DialogUtlis.showMassage(context, errorMessage,
-      postActionName: 'Cancel',
+      posActionName: 'Cancel',
         negActionName: "Try again",
         negAction: (){
         register();

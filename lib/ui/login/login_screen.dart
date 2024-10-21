@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/database/my_database.dart';
 import 'package:todo/ui/register/register_screen.dart';
 
 import '../../components/custom_form_field.dart';
+import '../../provider/auth_provider.dart';
 import '../../validation_utlis.dart';
 import '../dialog_utlis.dart';
 import '../home/home_screen.dart';
@@ -80,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return null;
                     }, controller: passwordController,),
+                  SizedBox(height: 30,),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 8)
@@ -123,11 +125,13 @@ class _LoginScreenState extends State<LoginScreen> {
      DialogUtlis.hideDialog(context);
        if(user == null){
          DialogUtlis.showMassage(context, "Error.Can't Find In Database",
-             postActionName:'Ok' );
+             posActionName:'Ok' );
          return;
        }
-      DialogUtlis.showMassage(context, "User Logged Successfully",
-        postActionName:'Ok',
+       var authProvider = Provider.of<AuthinProvider>(context,listen: false);
+       authProvider.updateUser(user);
+        DialogUtlis.showMassage(context, "User Logged Successfully",
+        posActionName:'Ok',
         postAction: (){
           Navigator.pushReplacementNamed(context, HomeScreen.routeName);
         },
@@ -141,13 +145,14 @@ class _LoginScreenState extends State<LoginScreen> {
       String errorMessage ='Wrong Email or password.';
 
       DialogUtlis.showMassage(context, errorMessage,
-          postActionName:'Ok' );
+          posActionName:'Ok' );
+
 
     } catch (e) {
       DialogUtlis.hideDialog(context);
       String errorMessage = 'Something went wrong';
       DialogUtlis.showMassage(context, errorMessage,
-          postActionName: 'Cancel',
+          posActionName: 'Cancel',
           negActionName: "Try again",
           negAction: (){
             login();

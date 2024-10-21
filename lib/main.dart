@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/provider/auth_provider.dart';
 import 'package:todo/ui/home/home_screen.dart';
 import 'package:todo/ui/login/login_screen.dart';
 import 'package:todo/ui/register/register_screen.dart';
@@ -10,7 +13,9 @@ void main () async{
   await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
 );
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (BuildContext context) =>AuthinProvider(),
+  child:  MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -20,21 +25,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: FToastBuilder(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           headline4: TextStyle(
             fontSize: 32,
             color: Colors.black,
           )
         ),
-         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Color(0xFFDFECDB),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+         primarySwatch: Colors.grey,
+        scaffoldBackgroundColor: const Color(0xFFDFECDB),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.transparent,
           elevation: 0
         ),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,

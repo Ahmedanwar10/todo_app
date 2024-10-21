@@ -24,7 +24,7 @@ class DialogUtlis{
   }
   static void showMassage(BuildContext context ,String message,
   {
-    String? postActionName,
+    String? posActionName,
     VoidCallback? postAction,
     String? negActionName,
     VoidCallback? negAction,
@@ -32,12 +32,12 @@ class DialogUtlis{
   }
   ){
     List<Widget> actoins =[];
-    if(postActionName != null){
+    if(posActionName != null){
       actoins.add(TextButton(onPressed: (){
         Navigator.pop(context);
         postAction?.call();
       },
-          child: Text(postActionName)));
+          child: Text(posActionName)));
     }
     if(negActionName != null){
       actoins.add(TextButton(onPressed: (){

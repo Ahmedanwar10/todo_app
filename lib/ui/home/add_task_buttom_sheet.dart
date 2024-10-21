@@ -1,7 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/MyDateUltis.dart';
 import 'package:todo/components/custom_form_field.dart';
+import 'package:todo/database/my_database.dart';
+import 'package:todo/ui/dialog_utlis.dart';
+
+import '../../database/model/Task.dart';
+import '../../provider/auth_provider.dart';
+
 
 class AddTaskButtomSheet extends StatefulWidget {
    AddTaskButtomSheet({super.key});
@@ -78,11 +85,38 @@ class _AddTaskButtomSheetState extends State<AddTaskButtomSheet> {
     );
   }
 
-  void AddTask(){
+  void AddTask()async{
     if(formKey.currentState?.validate()==false){
       return;
     }
+
+    // show task
+    DialogUtlis.showMassage(context, "Loading....");
+
+    // add task to db
+    Task task = Task(
+      title: titleController.text,
+      desc: descriptionController.text,
+      dateTime: MyDateUtils.dateOnly(selectedDate),
+    );
+    AuthinProvider  authinProvider =Provider.of<AuthinProvider>(context,listen: false);
+
+    print('${selectedDate.millisecondsSinceEpoch}');
+    await MyDataBase.addTask(authinProvider.currentUser?.id ?? "", task);
+    DialogUtlis.hideDialog(context);
+    DialogUtlis.showMassage(context, "Task Added Successfully",
+    posActionName: "ok",
+      postAction: (){
+      Navigator.pop(context);
+      }
+    );
+
+    //hide loading and return back to home screen
+
   }
+
+
+
 var selectedDate = DateTime.now();
   void showTaskDatePicker()async{
     var date = await showDatePicker(
@@ -91,9 +125,8 @@ var selectedDate = DateTime.now();
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 365)),);
     if(date==null)return;
-    selectedDate: date;
     setState(() {
-      selectedDate: date;
+      selectedDate= date;
 
     });
   }

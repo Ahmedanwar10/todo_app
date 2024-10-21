@@ -39,4 +39,24 @@ class MyDataBase{
     var docSnapshot = await collection.doc(id).get();
     return docSnapshot.data();
   }//هنا استخدمنا await and async واستنيت data ترجع وبعد كدا عملت return
+ static Future<void> addTask(String uid,Task task)async {
+   var newTaskDoc= getTasksCollection(uid).doc();
+       task.id = newTaskDoc.id;
+       newTaskDoc.set(task);
+ }
+   static Future<QuerySnapshot<Task>> getTasks (String uId){
+   return  getTasksCollection(uId).get();
+}
+
+  static Stream<QuerySnapshot<Task>> getTasksRealTimeUpdate (String uId,int date){
+    return  getTasksCollection(uId).where('data',isEqualTo:date)
+
+    .snapshots();
+  }
+
+
+  static Future<void> deleteTask(String uid , String taskId){
+    return  getTasksCollection(uid).doc(taskId).delete();
+
+  }
 }
